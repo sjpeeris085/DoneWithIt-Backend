@@ -6,9 +6,15 @@ const usersStore = require("../store/users");
 const auth = require("../middleware/auth");
 const validateWith = require("../middleware/validation");
 
+//const schema = {
+const schema = Joi.object({
+  token: Joi.string().required(),
+});
+
 router.post(
   "/",
-  [auth, validateWith({ token: Joi.string().required() })],
+  //[auth, validateWith({ token: Joi.string().required() })],
+  [auth, validateWith(schema)],
   (req, res) => {
     const user = usersStore.getUserById(req.user.userId);
     if (!user) return res.status(400).send({ error: "Invalid user." });
